@@ -22,14 +22,10 @@ class AnswerTimer extends StatefulWidget {
 class _AnswerTimerState extends State<AnswerTimer> {
   double? _width;
 
-  Timer? _timer;
-
   @override
   void dispose() {
-    if (_timer!.isActive) {
-      _timer!.cancel();
-    }
-
+    print("Dispose ... ");
+    sl<AnswerTimerFuctions>().timer?.cancel();
     super.dispose();
   }
 
@@ -37,7 +33,10 @@ class _AnswerTimerState extends State<AnswerTimer> {
   initState() {
     print("initState Called");
 
-    _timer = Timer.periodic(const Duration(seconds: 1), (timer) async {
+    sl<AnswerTimerFuctions>().timer =
+        Timer.periodic(const Duration(seconds: 1), (timer) async {
+      print("Timer .... ${timer.isActive}");
+
       BlocProvider.of<AnswerTimerCubit>(context)
           .setTimerSecond(sl<AnswerTimerFuctions>().second += 1);
 
@@ -46,6 +45,8 @@ class _AnswerTimerState extends State<AnswerTimer> {
 
         if (sl<GameFunctions>().currentQuiz ==
             sl<HomeFunctions>().quizeModel!.questions!.length - 1) {
+          sl<AnswerTimerFuctions>().timer!.cancel();
+
           Navigator.pushNamed(context, AppRoutes.RESULT_SCREEN);
         } else {
           BlocProvider.of<GameCubit>(context)

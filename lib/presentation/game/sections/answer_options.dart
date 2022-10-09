@@ -73,6 +73,24 @@ class AnswerOptions extends StatelessWidget {
                                       .questions!
                                       .length -
                                   1) {
+                            BlocProvider.of<GameCubit>(context)
+                                .setSelectedOptionsAndCurrectAnswer(
+                                    selectedOption: sl<GameFunctions>()
+                                        .answer
+                                        .answers!
+                                        .toJson()
+                                        .keys
+                                        .toList()[index],
+                                    currectAnswer: sl<GameFunctions>()
+                                        .answer
+                                        .correctAnswer);
+
+                            sl<GameFunctions>().isAbsor = true;
+
+                            await Future.delayed(Duration(seconds: 2));
+
+                            sl<AnswerTimerFuctions>().timer!.cancel();
+
                             Navigator.pushNamed(
                                 context, AppRoutes.RESULT_SCREEN);
                           } else {
